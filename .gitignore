@@ -1,5 +1,16 @@
-node_modules
+# Dependencies
+node_modules/
+
+# Environment variables
 .env
-dist
-build
-coverage
+
+# Logs
+npm-debug.log*
+
+# Build folders
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
