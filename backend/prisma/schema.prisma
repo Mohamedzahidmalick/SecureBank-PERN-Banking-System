@@ -27,18 +27,23 @@ model Account {
   userId        Int
   user          User     @relation(fields: [userId], references: [id])
 
-  transactions  Transaction[]
+  sentTransactions     Transaction[] @relation("SenderTransactions")
+  receivedTransactions Transaction[] @relation("ReceiverTransactions")
 
   createdAt     DateTime @default(now())
 }
 
 model Transaction {
-  id          Int      @id @default(autoincrement())
-  type        String
-  amount      Float
+  id              Int      @id @default(autoincrement())
 
-  accountId   Int
-  account     Account @relation(fields: [accountId], references: [id])
+  transactionType String
+  amount          Float
 
-  createdAt   DateTime @default(now())
+  senderId        Int?
+  receiverId      Int?
+
+  sender          Account? @relation("SenderTransactions", fields: [senderId], references: [id])
+  receiver        Account? @relation("ReceiverTransactions", fields: [receiverId], references: [id])
+
+  createdAt       DateTime @default(now())
 }
