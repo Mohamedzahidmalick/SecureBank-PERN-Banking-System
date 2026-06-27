@@ -304,10 +304,53 @@ const getTransactionHistory = async (req, res) => {
   }
 };
 
+const getMyAccount = async (req, res) => {
+  try {
+
+    const account = await prisma.account.findFirst({
+      where: {
+        userId: req.user.id
+      },
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+            role: true
+          }
+        }
+      }
+    });
+
+    if (!account) {
+      return res.status(404).json({
+        success: false,
+        message: "Account not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      account
+    });
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server Error"
+    });
+
+  }
+};
+
 module.exports = {
   getAccount,
+  getMyAccount,
   depositMoney,
   withdrawMoney,
   transferMoney,
-  getTransactionHistory,
+  getTransactionHistory
 };
